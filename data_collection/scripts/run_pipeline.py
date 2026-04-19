@@ -1,4 +1,4 @@
-from src.pipeline import main
+from data_collection.src.pipeline import main
 
 
 if __name__ == "__main__":

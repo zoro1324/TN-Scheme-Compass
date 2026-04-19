@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from src.models import SchemeRecord
+from data_collection.src.models import SchemeRecord
 
 
 def is_scheme_output(raw: dict[str, Any]) -> bool:

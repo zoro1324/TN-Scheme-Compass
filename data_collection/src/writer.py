@@ -6,7 +6,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
-from src.models import ACCEPTED_FIELDNAMES, REVIEW_FIELDNAMES, ReviewRow, SchemeRecord
+from data_collection.src.models import ACCEPTED_FIELDNAMES, REVIEW_FIELDNAMES, ReviewRow, SchemeRecord
 
 
 def init_accepted_csv(path: str) -> None:

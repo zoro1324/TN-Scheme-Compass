@@ -5,22 +5,22 @@ from datetime import datetime, timezone
 import time
 from typing import Any
 
-from src.clients.groq_client import GroqClient
-from src.clients.ollama_client import OllamaClient
-from src.clients.tavily_client import TavilyClient
-from src.config import load_settings
-from src.fetcher import fetch_page_content
-from src.models import ReviewRow, SchemeRecord, build_review_row, model_excerpt
-from src.normalizer import deduplicate_records, normalize_scheme_record
-from src.source_registry import (
+from data_collection.src.clients.groq_client import GroqClient
+from data_collection.src.clients.ollama_client import OllamaClient
+from data_collection.src.clients.tavily_client import TavilyClient
+from data_collection.src.config import load_settings
+from data_collection.src.fetcher import fetch_page_content
+from data_collection.src.models import ReviewRow, SchemeRecord, build_review_row, model_excerpt
+from data_collection.src.normalizer import deduplicate_records, normalize_scheme_record
+from data_collection.src.source_registry import (
     discovery_queries,
     domain_from_url,
     include_domains_for_tavily,
     is_official_url,
     seed_urls,
 )
-from src.validator import is_scheme_output, validate_scheme_record
-from src.writer import (
+from data_collection.src.validator import is_scheme_output, validate_scheme_record
+from data_collection.src.writer import (
     append_accepted_row,
     append_review_row,
     init_accepted_csv,

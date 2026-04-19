@@ -5,7 +5,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-from src.models import PageContent
+from data_collection.src.models import PageContent
 
 
 def _normalize_text(value: str) -> str:

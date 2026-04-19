@@ -4,7 +4,7 @@ from typing import Iterable
 
 import requests
 
-from src.models import SearchHit
+from data_collection.src.models import SearchHit
 
 
 class TavilyClient:

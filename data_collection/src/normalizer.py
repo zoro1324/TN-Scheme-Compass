@@ -5,8 +5,8 @@ import re
 from datetime import datetime
 from typing import Any
 
-from src.models import SchemeRecord
-from src.source_registry import domain_from_url
+from data_collection.src.models import SchemeRecord
+from data_collection.src.source_registry import domain_from_url
 def normalize_scheme_record(
     raw: dict[str, Any],
     fallback_source_url: str,
