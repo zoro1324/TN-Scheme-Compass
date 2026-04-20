@@ -125,6 +125,37 @@ a {
   padding: 1rem 0.3rem;
 }
 
+.chat-header__controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.language-switch {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.18rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  background: rgba(22, 27, 34, 0.92);
+}
+
+.language-switch__button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.24rem 0.56rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #9aa5b1;
+  background: transparent;
+  cursor: pointer;
+}
+
+.language-switch__button--active {
+  color: #e6edf3;
+  background: rgba(56, 139, 253, 0.28);
+}
+
 .chat-header__title {
   margin: 0;
   font-size: 0.88rem;
@@ -516,6 +547,14 @@ a {
 @media (max-width: 680px) {
   .chat-header {
     padding-top: 0.4rem;
+  }
+
+  .chat-header__controls {
+    gap: 0.44rem;
+  }
+
+  .language-switch__button {
+    padding: 0.22rem 0.48rem;
   }
 
   .session-indicator {

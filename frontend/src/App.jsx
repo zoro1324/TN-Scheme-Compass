@@ -5,14 +5,102 @@ import SchemeCard from "./components/SchemeCard";
 import SplineHero from "./components/SplineHero";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-const composerPlaceholder =
-  "Example: I am a 32 year old woman, OBC, earning 2.4 lakh yearly. Which schemes can I apply for?";
 
-const quickActions = [
-  "Check eligibility",
-  "List schemes",
-  "Required documents",
-];
+const uiText = {
+  en: {
+    hero: {
+      kicker: "TN Scheme Compass",
+      title: "AI Welfare Scheme Assistant",
+      subtitle: "Ask naturally. Get clear eligibility, benefits, and application guidance in one place.",
+    },
+    welcome:
+      "Tell me your situation, and I will find Tamil Nadu schemes with full eligibility, benefits, documents, and application details.",
+    composerPlaceholder:
+      "Example: I am a 32 year old woman, OBC, earning 2.4 lakh yearly. Which schemes can I apply for?",
+    quickActions: ["Check eligibility", "List schemes", "Required documents"],
+    conversation: "Conversation",
+    assistantThinking: "Assistant is thinking...",
+    send: "Send",
+    session: {
+      issue: "Session issue",
+      connected: "Connected",
+      starting: "Starting",
+    },
+    languageLabel: "Language",
+    startVoiceInput: "Start voice input",
+    stopVoiceInput: "Stop voice input",
+    voiceRepliesOn: "Voice replies on",
+    voiceRepliesOff: "Voice replies off",
+    listening: "Listening...",
+    voiceUnsupported: "Voice input not supported in this browser.",
+    voiceNoSpeech: "No voice detected. Please try again.",
+    voiceBlocked: "Microphone access is blocked. Allow mic permission to use voice chat.",
+    voiceInputFailed: "Voice input failed. Please try again.",
+    voiceStartFailed: "Unable to start microphone. Please try again.",
+    ttsUnsupported: "Text-to-speech is not supported in this browser.",
+    sessionInitFailed: "Session init failed",
+    errorPrefix: "Error",
+    schemeLabels: {
+      benefit: "Benefit",
+      amount: "Amount",
+      eligibility: "Eligibility",
+      documents: "Documents",
+      apply: "Apply",
+      openApplication: "Open Application Link",
+      na: "N/A",
+    },
+  },
+  ta: {
+    hero: {
+      kicker: "TN Scheme Compass",
+      title: "AI நலத்திட்ட உதவியாளர்",
+      subtitle: "இயல்பாக கேளுங்கள். தகுதி, நன்மைகள், மற்றும் விண்ணப்ப வழிகாட்டுதலை தெளிவாக பெறுங்கள்.",
+    },
+    welcome:
+      "உங்கள் நிலையை பகிருங்கள்; தகுதி, நன்மைகள், ஆவணங்கள் மற்றும் விண்ணப்ப விவரங்களுடன் பொருந்தும் தமிழ்நாடு திட்டங்களை நான் கண்டுபிடித்து தருகிறேன்.",
+    composerPlaceholder:
+      "உதாரணம்: நான் 32 வயது பெண், OBC, ஆண்டு வருமானம் 2.4 லட்சம். எனக்கு எந்த திட்டங்கள் பொருந்தும்?",
+    quickActions: ["தகுதி சரிபார்", "திட்டங்களை பட்டியலிடு", "தேவையான ஆவணங்கள்"],
+    conversation: "உரையாடல்",
+    assistantThinking: "உதவியாளர் யோசித்து கொண்டிருக்கிறார்...",
+    send: "அனுப்பு",
+    session: {
+      issue: "அமர்வு சிக்கல்",
+      connected: "இணைந்துள்ளது",
+      starting: "தொடங்குகிறது",
+    },
+    languageLabel: "மொழி",
+    startVoiceInput: "குரல் உள்ளீட்டை தொடங்கு",
+    stopVoiceInput: "குரல் உள்ளீட்டை நிறுத்து",
+    voiceRepliesOn: "குரல் பதில் செயல்பாட்டில்",
+    voiceRepliesOff: "குரல் பதில் செயலற்றது",
+    listening: "கேட்டுக்கொண்டிருக்கிறது...",
+    voiceUnsupported: "இந்த உலாவியில் குரல் உள்ளீடு ஆதரிக்கப்படவில்லை.",
+    voiceNoSpeech: "குரல் கண்டறியப்படவில்லை. மீண்டும் முயற்சிக்கவும்.",
+    voiceBlocked: "மைக்ரோஃபோன் அணுகல் தடுக்கப்பட்டுள்ளது. அனுமதி அளிக்கவும்.",
+    voiceInputFailed: "குரல் உள்ளீடு தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.",
+    voiceStartFailed: "மைக்ரோஃபோனை தொடங்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.",
+    ttsUnsupported: "இந்த உலாவியில் உரையை குரலாக்கும் வசதி இல்லை.",
+    sessionInitFailed: "அமர்வு தொடக்கம் தோல்வி",
+    errorPrefix: "பிழை",
+    schemeLabels: {
+      benefit: "நன்மை",
+      amount: "தொகை",
+      eligibility: "தகுதி",
+      documents: "ஆவணங்கள்",
+      apply: "விண்ணப்பம்",
+      openApplication: "விண்ணப்ப இணைப்பை திற",
+      na: "தகவல் இல்லை",
+    },
+  },
+};
+
+const normalizeLanguage = (value) => (value === "ta" ? "ta" : "en");
+
+const getInitialLanguage = () => {
+  if (typeof window === "undefined") return "en";
+  return normalizeLanguage(window.localStorage.getItem("tn_language"));
+};
 
 const createMessage = (role, text, schemes = [], variant = "default") => ({
   id: crypto.randomUUID(),
@@ -23,6 +111,7 @@ const createMessage = (role, text, schemes = [], variant = "default") => ({
 });
 
 export default function App() {
+  const [uiLanguage, setUiLanguage] = useState(getInitialLanguage);
   const [sessionId, setSessionId] = useState("");
   const [sessionError, setSessionError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -34,9 +123,10 @@ export default function App() {
   const [messages, setMessages] = useState([
     createMessage(
       "assistant",
-      "Tell me your situation, and I will find Tamil Nadu schemes with full eligibility, benefits, documents, and application details.",
+      uiText[getInitialLanguage()].welcome,
     ),
   ]);
+  const copy = uiText[uiLanguage];
   const listEndRef = useRef(null);
   const recognitionRef = useRef(null);
   const draftRef = useRef("");
@@ -44,6 +134,10 @@ export default function App() {
   useEffect(() => {
     draftRef.current = draft;
   }, [draft]);
+
+  useEffect(() => {
+    window.localStorage.setItem("tn_language", uiLanguage);
+  }, [uiLanguage]);
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -54,7 +148,7 @@ export default function App() {
 
     setVoiceSupported(true);
     const recognition = new SpeechRecognition();
-    recognition.lang = "en-IN";
+    recognition.lang = uiLanguage === "ta" ? "ta-IN" : "en-IN";
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
     recognition.continuous = false;
@@ -83,11 +177,11 @@ export default function App() {
 
     recognition.onerror = (event) => {
       if (event.error === "no-speech") {
-        setVoiceError("No voice detected. Please try again.");
+        setVoiceError(uiText[uiLanguage].voiceNoSpeech);
       } else if (event.error === "not-allowed") {
-        setVoiceError("Microphone access is blocked. Allow mic permission to use voice chat.");
+        setVoiceError(uiText[uiLanguage].voiceBlocked);
       } else {
-        setVoiceError("Voice input failed. Please try again.");
+        setVoiceError(uiText[uiLanguage].voiceInputFailed);
       }
       setIsListening(false);
     };
@@ -102,7 +196,7 @@ export default function App() {
       recognition.stop();
       window.speechSynthesis?.cancel();
     };
-  }, []);
+  }, [uiLanguage]);
 
   useEffect(() => {
     const boot = async () => {
@@ -114,7 +208,7 @@ export default function App() {
       setSessionError(true);
       setMessages((prev) => [
         ...prev,
-        createMessage("assistant", `Session init failed: ${err.message}`, [], "warning"),
+        createMessage("assistant", `${uiText[getInitialLanguage()].sessionInitFailed}: ${err.message}`, [], "warning"),
       ]);
     });
   }, []);
@@ -134,11 +228,11 @@ export default function App() {
 
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(latest.text);
-    utterance.lang = "en-IN";
+    utterance.lang = uiLanguage === "ta" ? "ta-IN" : "en-IN";
     utterance.rate = 1;
     utterance.pitch = 1;
     window.speechSynthesis.speak(utterance);
-  }, [messages, autoSpeak]);
+  }, [messages, autoSpeak, uiLanguage]);
 
   const canSend = useMemo(() => Boolean(draft.trim()) && Boolean(sessionId) && !loading, [draft, sessionId, loading]);
 
@@ -155,6 +249,7 @@ export default function App() {
       const response = await axios.post(`${API_BASE}/api/chat/message`, {
         session_id: sessionId,
         message: text,
+        language: uiLanguage,
       });
 
       const payload = response.data;
@@ -164,28 +259,28 @@ export default function App() {
       });
     } catch (err) {
       const detail = err?.response?.data?.detail || err.message;
-      setMessages((prev) => [...prev, createMessage("assistant", `Error: ${detail}`, [], "warning")]);
+      setMessages((prev) => [...prev, createMessage("assistant", `${copy.errorPrefix}: ${detail}`, [], "warning")]);
     } finally {
       setLoading(false);
     }
   };
 
   const sessionStatus = sessionError
-    ? { text: "Session issue", tone: "warning" }
+    ? { text: copy.session.issue, tone: "warning" }
     : sessionId
-      ? { text: "Connected", tone: "ok" }
-      : { text: "Starting", tone: "pending" };
+      ? { text: copy.session.connected, tone: "ok" }
+      : { text: copy.session.starting, tone: "pending" };
 
   const handleQuickAction = (action) => {
     setDraft((prev) => {
       if (!prev.trim()) return action;
-      return `${prev.trim()} ${action.toLowerCase()}`;
+      return `${prev.trim()} ${action}`;
     });
   };
 
   const toggleListening = () => {
     if (!voiceSupported || !recognitionRef.current) {
-      setVoiceError("Voice input is not supported in this browser.");
+      setVoiceError(copy.voiceUnsupported);
       return;
     }
 
@@ -201,14 +296,14 @@ export default function App() {
       recognitionRef.current.start();
       setIsListening(true);
     } catch {
-      setVoiceError("Unable to start microphone. Please try again.");
+      setVoiceError(copy.voiceStartFailed);
       setIsListening(false);
     }
   };
 
   const toggleAutoSpeak = () => {
     if (!window.speechSynthesis) {
-      setVoiceError("Text-to-speech is not supported in this browser.");
+      setVoiceError(copy.ttsUnsupported);
       return;
     }
 
@@ -224,15 +319,33 @@ export default function App() {
   return (
     <div className="app-shell">
       <div className="app-inner">
-        <SplineHero />
+        <SplineHero text={copy.hero} />
 
         <main className="chat-shell">
           <div className="chat-header">
-            <p className="chat-header__title">Conversation</p>
-            <span className={`session-indicator session-indicator--${sessionStatus.tone}`}>
-              <span className="session-indicator__dot" aria-hidden="true" />
-              {sessionStatus.text}
-            </span>
+            <p className="chat-header__title">{copy.conversation}</p>
+            <div className="chat-header__controls">
+              <div className="language-switch" role="group" aria-label={copy.languageLabel}>
+                <button
+                  type="button"
+                  className={`language-switch__button ${uiLanguage === "en" ? "language-switch__button--active" : ""}`}
+                  onClick={() => setUiLanguage("en")}
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  className={`language-switch__button ${uiLanguage === "ta" ? "language-switch__button--active" : ""}`}
+                  onClick={() => setUiLanguage("ta")}
+                >
+                  தமிழ்
+                </button>
+              </div>
+              <span className={`session-indicator session-indicator--${sessionStatus.tone}`}>
+                <span className="session-indicator__dot" aria-hidden="true" />
+                {sessionStatus.text}
+              </span>
+            </div>
           </div>
 
           <div className="chat-scroll">
@@ -241,7 +354,7 @@ export default function App() {
                 {msg.schemes?.length ? (
                   <div className="inline-scheme-stack">
                     {msg.schemes.map((scheme) => (
-                      <SchemeCard key={scheme.scheme_id} scheme={scheme} />
+                      <SchemeCard key={scheme.scheme_id} scheme={scheme} labels={copy.schemeLabels} />
                     ))}
                   </div>
                 ) : null}
@@ -249,7 +362,7 @@ export default function App() {
             ))}
             {loading && (
               <div className="chat-thinking" role="status" aria-live="polite">
-                Assistant is thinking...
+                {copy.assistantThinking}
               </div>
             )}
             <div ref={listEndRef} />
@@ -260,15 +373,15 @@ export default function App() {
               <textarea
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
-                placeholder={composerPlaceholder}
+                placeholder={copy.composerPlaceholder}
                 className="composer__input"
               />
               <button
                 type="button"
                 className={`composer__voice ${isListening ? "composer__voice--active" : ""}`}
                 onClick={toggleListening}
-                aria-label={isListening ? "Stop voice input" : "Start voice input"}
-                title={isListening ? "Stop voice input" : "Start voice input"}
+                aria-label={isListening ? copy.stopVoiceInput : copy.startVoiceInput}
+                title={isListening ? copy.stopVoiceInput : copy.startVoiceInput}
               >
                 🎙
               </button>
@@ -276,10 +389,10 @@ export default function App() {
                 type="submit"
                 disabled={!canSend}
                 className="composer__send"
-                aria-label="Send message"
+                aria-label={copy.send}
               >
                 <span aria-hidden="true">➤</span>
-                <span className="composer__send-label">Send</span>
+                <span className="composer__send-label">{copy.send}</span>
               </button>
             </div>
             <div className="voice-controls" aria-live="polite">
@@ -288,14 +401,14 @@ export default function App() {
                 className={`voice-controls__toggle ${autoSpeak ? "voice-controls__toggle--on" : ""}`}
                 onClick={toggleAutoSpeak}
               >
-                {autoSpeak ? "Voice replies on" : "Voice replies off"}
+                {autoSpeak ? copy.voiceRepliesOn : copy.voiceRepliesOff}
               </button>
-              {isListening && <span className="voice-controls__status">Listening...</span>}
-              {!voiceSupported && <span className="voice-controls__status voice-controls__status--warning">Voice input not supported in this browser.</span>}
+              {isListening && <span className="voice-controls__status">{copy.listening}</span>}
+              {!voiceSupported && <span className="voice-controls__status voice-controls__status--warning">{copy.voiceUnsupported}</span>}
               {voiceError && <span className="voice-controls__status voice-controls__status--warning">{voiceError}</span>}
             </div>
             <div className="quick-actions" aria-label="Quick actions">
-              {quickActions.map((action) => (
+              {copy.quickActions.map((action) => (
                 <button
                   key={action}
                   type="button"
