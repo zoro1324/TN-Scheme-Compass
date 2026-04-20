@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #1e232b;
+  background: radial-gradient(circle at 12% 15%, #d5f5e2 0, #f7fbf8 28%),
+    radial-gradient(circle at 80% 10%, #e9f3ff 0, #f7fbf8 32%),
+    linear-gradient(120deg, #f7fbf8 0%, #f5faf6 50%, #f4f8ff 100%);
+}
+
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", sans-serif;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.glow-panel {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(246, 251, 248, 0.86));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
