@@ -129,11 +129,6 @@ export default function App() {
   const copy = uiText[uiLanguage];
   const listEndRef = useRef(null);
   const recognitionRef = useRef(null);
-  const draftRef = useRef("");
-
-  useEffect(() => {
-    draftRef.current = draft;
-  }, [draft]);
 
   useEffect(() => {
     window.localStorage.setItem("tn_language", uiLanguage);
@@ -149,28 +144,25 @@ export default function App() {
     setVoiceSupported(true);
     const recognition = new SpeechRecognition();
     recognition.lang = uiLanguage === "ta" ? "ta-IN" : "en-IN";
-    recognition.interimResults = true;
+    recognition.interimResults = false;
     recognition.maxAlternatives = 1;
     recognition.continuous = false;
 
     recognition.onresult = (event) => {
-      let finalTranscript = "";
-      let interimTranscript = "";
+      const finalizedParts = [];
 
       for (let i = event.resultIndex; i < event.results.length; i += 1) {
-        const chunk = event.results[i][0]?.transcript || "";
+        const chunk = (event.results[i][0]?.transcript || "").trim();
         if (event.results[i].isFinal) {
-          finalTranscript += `${chunk} `;
-        } else {
-          interimTranscript += `${chunk} `;
+          finalizedParts.push(chunk);
         }
       }
 
-      const spokenText = (finalTranscript || interimTranscript).trim();
+      const spokenText = finalizedParts.join(" ").trim();
       if (!spokenText) return;
 
-      setDraft(() => {
-        const existing = draftRef.current.trim();
+      setDraft((current) => {
+        const existing = current.trim();
         return existing ? `${existing} ${spokenText}` : spokenText;
       });
     };
@@ -235,6 +227,8 @@ export default function App() {
   }, [messages, autoSpeak, uiLanguage]);
 
   const canSend = useMemo(() => Boolean(draft.trim()) && Boolean(sessionId) && !loading, [draft, sessionId, loading]);
+
+  const hasUserMessages = useMemo(() => messages.some((msg) => msg.role === "user"), [messages]);
 
   const sendMessage = async (event) => {
     event.preventDefault();
@@ -319,7 +313,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <div className="app-inner">
-        <SplineHero text={copy.hero} />
+        {!hasUserMessages && <SplineHero text={copy.hero} />}
 
         <main className="chat-shell">
           <div className="chat-header">
