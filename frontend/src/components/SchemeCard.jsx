@@ -1,21 +1,31 @@
-export default function SchemeCard({ scheme }) {
+export default function SchemeCard({ scheme, labels }) {
+  const text = labels || {
+    benefit: "Benefit",
+    amount: "Amount",
+    eligibility: "Eligibility",
+    documents: "Documents",
+    apply: "Apply",
+    openApplication: "Open Application Link",
+    na: "N/A",
+  };
+
   return (
     <article className="scheme-card">
       <div className="scheme-card__header">
         <h4>{scheme.scheme_name}</h4>
         <span className="scheme-card__badge">
-          {scheme.scheme_level || "N/A"}
+          {scheme.scheme_level || text.na}
         </span>
       </div>
 
       <p className="scheme-card__reason">{scheme.match_reason}</p>
 
       <ul className="scheme-card__meta">
-        <li><strong>Benefit:</strong> {scheme.benefit_description || "N/A"}</li>
-        <li><strong>Amount:</strong> {scheme.benefit_amount || "N/A"}</li>
-        <li><strong>Eligibility:</strong> {scheme.eligibility_criteria || "N/A"}</li>
-        <li><strong>Documents:</strong> {scheme.required_documents || "N/A"}</li>
-        <li><strong>Apply:</strong> {scheme.application_process || "N/A"}</li>
+        <li><strong>{text.benefit}:</strong> {scheme.benefit_description || text.na}</li>
+        <li><strong>{text.amount}:</strong> {scheme.benefit_amount || text.na}</li>
+        <li><strong>{text.eligibility}:</strong> {scheme.eligibility_criteria || text.na}</li>
+        <li><strong>{text.documents}:</strong> {scheme.required_documents || text.na}</li>
+        <li><strong>{text.apply}:</strong> {scheme.application_process || text.na}</li>
       </ul>
 
       {scheme.application_url && (
@@ -25,7 +35,7 @@ export default function SchemeCard({ scheme }) {
           target="_blank"
           rel="noreferrer"
         >
-          Open Application Link
+          {text.openApplication}
         </a>
       )}
     </article>
