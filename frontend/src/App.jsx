@@ -2,20 +2,37 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 import ChatBubble from "./components/ChatBubble";
 import SchemeCard from "./components/SchemeCard";
+import SplineHero from "./components/SplineHero";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const composerPlaceholder =
+  "Example: I am a 32 year old woman, OBC, earning 2.4 lakh yearly. Which schemes can I apply for?";
+
+const quickActions = [
+  "Check eligibility",
+  "List schemes",
+  "Required documents",
+];
+
+const createMessage = (role, text, schemes = [], variant = "default") => ({
+  id: crypto.randomUUID(),
+  role,
+  text,
+  schemes,
+  variant,
+});
 
 export default function App() {
   const [sessionId, setSessionId] = useState("");
+  const [sessionError, setSessionError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState([
-    {
-      role: "assistant",
-      text: "Tell me your situation, and I will find Tamil Nadu schemes with full eligibility, benefits, documents, and application details.",
-    },
+    createMessage(
+      "assistant",
+      "Tell me your situation, and I will find Tamil Nadu schemes with full eligibility, benefits, documents, and application details.",
+    ),
   ]);
-  const [schemeCards, setSchemeCards] = useState([]);
   const listEndRef = useRef(null);
 
   useEffect(() => {
@@ -25,16 +42,17 @@ export default function App() {
     };
 
     boot().catch((err) => {
+      setSessionError(true);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: `Session init failed: ${err.message}` },
+        createMessage("assistant", `Session init failed: ${err.message}`, [], "warning"),
       ]);
     });
   }, []);
 
   useEffect(() => {
     listEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, schemeCards]);
+  }, [messages]);
 
   const canSend = useMemo(() => Boolean(draft.trim()) && Boolean(sessionId) && !loading, [draft, sessionId, loading]);
 
@@ -45,7 +63,7 @@ export default function App() {
     const text = draft.trim();
     setDraft("");
     setLoading(true);
-    setMessages((prev) => [...prev, { role: "user", text }]);
+    setMessages((prev) => [...prev, createMessage("user", text)]);
 
     try {
       const response = await axios.post(`${API_BASE}/api/chat/message`, {
@@ -56,73 +74,100 @@ export default function App() {
       const payload = response.data;
 
       setMessages((prev) => {
-        const next = [...prev, { role: "assistant", text: payload.reply }];
+        const next = [...prev, createMessage("assistant", payload.reply, payload.schemes || [])];
         if (payload.follow_up_question) {
-          next.push({ role: "assistant", text: `Next question: ${payload.follow_up_question}` });
+          next.push(createMessage("assistant", `Next question: ${payload.follow_up_question}`));
         }
         return next;
       });
-
-      setSchemeCards(payload.schemes || []);
     } catch (err) {
       const detail = err?.response?.data?.detail || err.message;
-      setMessages((prev) => [...prev, { role: "assistant", text: `Error: ${detail}` }]);
+      setMessages((prev) => [...prev, createMessage("assistant", `Error: ${detail}`, [], "warning")]);
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-6 md:px-6 md:py-8">
-      <header className="mb-5 rounded-3xl bg-ink px-6 py-6 text-white shadow-lift">
-        <p className="text-xs uppercase tracking-[0.16em] text-brand-200">TN Scheme Compass</p>
-        <h1 className="font-heading text-2xl font-bold md:text-4xl">Dynamic Welfare Scheme Assistant</h1>
-        <p className="mt-2 max-w-3xl text-sm text-slate-200 md:text-base">
-          Ask in plain language. The assistant adapts questions to your inputs and returns complete scheme details, not generic replies.
-        </p>
-      </header>
+  const sessionStatus = sessionError
+    ? { text: "Session issue", tone: "warning" }
+    : sessionId
+      ? { text: "Connected", tone: "ok" }
+      : { text: "Starting", tone: "pending" };
 
-      <main className="grid flex-1 gap-5 md:grid-cols-5">
-        <section className="glow-panel md:col-span-3 flex min-h-[55vh] flex-col rounded-3xl border border-white/80 p-4 shadow-sm md:p-5">
-          <div className="mb-3 text-xs font-medium text-slate-500">Session: {sessionId || "Starting..."}</div>
-          <div className="flex-1 space-y-3 overflow-y-auto pr-1">
-            {messages.map((msg, idx) => (
-              <ChatBubble key={`${msg.role}-${idx}`} role={msg.role} text={msg.text} />
+  const handleQuickAction = (action) => {
+    setDraft((prev) => {
+      if (!prev.trim()) return action;
+      return `${prev.trim()} ${action.toLowerCase()}`;
+    });
+  };
+
+  return (
+    <div className="app-shell">
+      <div className="app-inner">
+        <SplineHero />
+
+        <main className="chat-shell">
+          <div className="chat-header">
+            <p className="chat-header__title">Conversation</p>
+            <span className={`session-indicator session-indicator--${sessionStatus.tone}`}>
+              <span className="session-indicator__dot" aria-hidden="true" />
+              {sessionStatus.text}
+            </span>
+          </div>
+
+          <div className="chat-scroll">
+            {messages.map((msg) => (
+              <ChatBubble key={msg.id} role={msg.role} text={msg.text} variant={msg.variant}>
+                {msg.schemes?.length ? (
+                  <div className="inline-scheme-stack">
+                    {msg.schemes.map((scheme) => (
+                      <SchemeCard key={scheme.scheme_id} scheme={scheme} />
+                    ))}
+                  </div>
+                ) : null}
+              </ChatBubble>
             ))}
+            {loading && (
+              <div className="chat-thinking" role="status" aria-live="polite">
+                Assistant is thinking...
+              </div>
+            )}
             <div ref={listEndRef} />
           </div>
 
-          <form onSubmit={sendMessage} className="mt-4 flex gap-2">
-            <textarea
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              placeholder="Example: I am a 32 year old woman, OBC, earning 2.4 lakh yearly. Which schemes can I apply for?"
-              className="h-24 flex-1 resize-none rounded-2xl border border-brand-200 bg-white px-4 py-3 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200"
-            />
-            <button
-              type="submit"
-              disabled={!canSend}
-              className="rounded-2xl bg-brand-600 px-5 py-3 font-semibold text-white transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-slate-300"
-            >
-              {loading ? "Thinking..." : "Send"}
-            </button>
+          <form onSubmit={sendMessage} className="composer">
+            <div className="composer__bar">
+              <textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder={composerPlaceholder}
+                className="composer__input"
+              />
+              <button
+                type="submit"
+                disabled={!canSend}
+                className="composer__send"
+                aria-label="Send message"
+              >
+                <span aria-hidden="true">➤</span>
+                <span className="composer__send-label">Send</span>
+              </button>
+            </div>
+            <div className="quick-actions" aria-label="Quick actions">
+              {quickActions.map((action) => (
+                <button
+                  key={action}
+                  type="button"
+                  className="quick-actions__chip"
+                  onClick={() => handleQuickAction(action)}
+                >
+                  {action}
+                </button>
+              ))}
+            </div>
           </form>
-        </section>
-
-        <aside className="md:col-span-2 rounded-3xl border border-white/80 bg-white/85 p-4 shadow-sm md:p-5">
-          <h2 className="font-heading text-lg font-semibold text-ink">Matched Scheme Details</h2>
-          <p className="mb-3 text-sm text-slate-600">Each card includes key details for eligibility and application.</p>
-          <div className="space-y-3 overflow-y-auto md:max-h-[68vh]">
-            {schemeCards.length ? (
-              schemeCards.map((scheme) => <SchemeCard key={scheme.scheme_id} scheme={scheme} />)
-            ) : (
-              <p className="rounded-2xl bg-slate-50 p-3 text-sm text-slate-600">
-                Scheme cards will appear here once you ask a question.
-              </p>
-            )}
-          </div>
-        </aside>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
