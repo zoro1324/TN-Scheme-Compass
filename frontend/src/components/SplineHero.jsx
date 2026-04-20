@@ -1,3 +1,5 @@
+import Spline from "@splinetool/react-spline";
+
 export default function SplineHero({ text }) {
   const heroText = text || {
     kicker: "TN Scheme Compass",
@@ -7,8 +9,10 @@ export default function SplineHero({ text }) {
 
   return (
     <section className="hero-shell" aria-label="TN Scheme Compass hero">
-      <div className="hero-avatar" aria-hidden="true">
-        <span className="hero-avatar__emoji">👻</span>
+      <div className="hero-spline-container" aria-hidden="true">
+        <Spline
+          scene="https://prod.spline.design/XLBNexSpNR4za0AV/scene.splinecode"
+        />
       </div>
       <div className="hero-content">
         <p className="hero-kicker">{heroText.kicker}</p>

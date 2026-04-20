@@ -66,19 +66,15 @@ a {
   padding: 1.5rem 1rem 0.25rem;
 }
 
-.hero-avatar {
-  width: 68px;
-  height: 68px;
-  border-radius: 9999px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(180deg, rgba(56, 139, 253, 0.16), rgba(56, 139, 253, 0.05));
-  border: 1px solid rgba(56, 139, 253, 0.34);
-}
-
-.hero-avatar__emoji {
-  font-size: 1.75rem;
-  line-height: 1;
+.hero-spline-container {
+  width: 100%;
+  max-width: 540px;
+  height: 380px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(56, 139, 253, 0.08), rgba(13, 17, 23, 0.5));
+  border: 1px solid rgba(56, 139, 253, 0.2);
+  box-shadow: 0 8px 32px rgba(56, 139, 253, 0.12);
 }
 
 .hero-content {
