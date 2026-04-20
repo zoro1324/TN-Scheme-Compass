@@ -27,6 +27,36 @@ def _env_float(name: str, default: float) -> float:
 
 
 @dataclass(frozen=True)
+class ChatbotSettings:
+    """Settings for the chatbot module."""
+    groq_api_key: str
+    groq_model: str
+    whisper_model_size: str
+    speech_duration_seconds: int
+    enable_speech_mode: bool
+    enable_tts: bool
+    speech_rate: int
+    speech_volume: float
+
+
+def load_chatbot_settings() -> ChatbotSettings:
+    """Load chatbot-specific settings."""
+    load_dotenv(override=False)
+    
+    return ChatbotSettings(
+        groq_api_key=os.getenv("GROQ_API_KEY", "").strip(),
+        groq_model=os.getenv("GROQ_MODEL", "mixtral-8x7b-32768").strip() 
+            or "mixtral-8x7b-32768",
+        whisper_model_size=os.getenv("WHISPER_MODEL_SIZE", "base").strip() or "base",
+        speech_duration_seconds=_env_int("SPEECH_DURATION_SECONDS", 10),
+        enable_speech_mode=os.getenv("ENABLE_SPEECH_MODE", "true").lower() == "true",
+        enable_tts=os.getenv("ENABLE_TTS", "true").lower() == "true",
+        speech_rate=_env_int("SPEECH_RATE", 150),
+        speech_volume=_env_float("SPEECH_VOLUME", 0.9),
+    )
+
+
+@dataclass(frozen=True)
 class Settings:
     tavily_api_key: str
     groq_api_key: str
