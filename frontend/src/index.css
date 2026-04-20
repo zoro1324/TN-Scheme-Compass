@@ -328,6 +328,7 @@ a {
 
 .composer__bar {
   position: relative;
+  --composer-send-width: 7.25rem;
 }
 
 .composer__input {
@@ -338,7 +339,7 @@ a {
   border-radius: 24px;
   border: 1px solid var(--border-soft);
   background: var(--bg-soft);
-  padding: 0.92rem 8rem 0.92rem 1rem;
+  padding: 0.92rem calc(var(--composer-send-width) + 3.6rem) 0.92rem 1rem;
   color: var(--text-main);
   font: inherit;
   line-height: 1.5;
@@ -358,18 +359,20 @@ a {
   border: none;
   border-radius: 999px;
   padding: 0.45rem 0.72rem;
-  min-width: 72px;
+  width: var(--composer-send-width);
+  justify-content: center;
   color: #ffffff;
   background: #1f6feb;
   font-weight: 600;
   font-size: 0.82rem;
   cursor: pointer;
   transition: transform 130ms ease, background-color 130ms ease;
+  z-index: 2;
 }
 
 .composer__voice {
   position: absolute;
-  right: 4.45rem;
+  right: calc(var(--composer-send-width) + 1rem);
   bottom: 0.58rem;
   display: inline-flex;
   align-items: center;
@@ -382,6 +385,7 @@ a {
   background: rgba(110, 118, 129, 0.18);
   cursor: pointer;
   transition: transform 130ms ease, border-color 130ms ease, background-color 130ms ease;
+  z-index: 3;
 }
 
 .composer__voice:hover {
@@ -526,9 +530,13 @@ a {
     max-width: 94%;
   }
 
+  .composer__bar {
+    --composer-send-width: 3.2rem;
+  }
+
   .composer__input {
     min-height: 74px;
-    padding-right: 7.6rem;
+    padding-right: calc(var(--composer-send-width) + 3.2rem);
   }
 
   .composer__send-label {
@@ -536,7 +544,7 @@ a {
   }
 
   .composer__voice {
-    right: 3.8rem;
+    right: calc(var(--composer-send-width) + 0.9rem);
   }
 }
 
