@@ -78,23 +78,7 @@ class LLMOrchestrator:
     ) -> str | None:
         if not missing_fields:
             return None
-
-        llm_response = self._chat(
-            "You are an eligibility assistant. Ask exactly one concise follow-up question.",
-            (
-                "Ask one next-best question based on user intent and missing profile fields.\n"
-                f"Missing fields: {missing_fields}\n"
-                f"Known profile: {json.dumps(profile)}\n"
-                f"Recent user message: {user_message}\n"
-                f"Top scheme context: {scheme_context}\n"
-                "Constraints: ask only one question, no bullet list, no preamble, under 25 words."
-            ),
-            max_tokens=80,
-            temperature=0.5,
-        )
-        if llm_response:
-            return llm_response
-
+        # Deterministic single-question flow to avoid multi-part or repetitive prompts.
         field = missing_fields[0]
         fallback_questions = {
             "age": "What is your age?",
@@ -171,9 +155,12 @@ class LLMOrchestrator:
         text = message.lower()
         updates: dict[str, Any] = {}
 
-        age_match = re.search(r"\bage\s*(?:is|:)?\s*(\d{1,2})\b|\b(\d{1,2})\s*(?:years old|yrs old|yo)\b", text)
+        age_match = re.search(
+            r"\bage\s*(?:is|:)?\s*(\d{1,2})\b|\b(?:i am|i'm)\s*(\d{1,2})\b|\b(\d{1,2})\s*(?:year old|years old|yr old|yrs old|yo)\b",
+            text,
+        )
         if age_match:
-            age_text = age_match.group(1) or age_match.group(2)
+            age_text = age_match.group(1) or age_match.group(2) or age_match.group(3)
             age = int(age_text)
             if 0 < age < 120:
                 updates["age"] = age
