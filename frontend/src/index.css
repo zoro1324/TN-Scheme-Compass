@@ -311,7 +311,7 @@ a {
   border-radius: 24px;
   border: 1px solid var(--border-soft);
   background: var(--bg-soft);
-  padding: 0.92rem 4.9rem 0.92rem 1rem;
+  padding: 0.92rem 8rem 0.92rem 1rem;
   color: var(--text-main);
   font: inherit;
   line-height: 1.5;
@@ -340,6 +340,35 @@ a {
   transition: transform 130ms ease, background-color 130ms ease;
 }
 
+.composer__voice {
+  position: absolute;
+  right: 4.45rem;
+  bottom: 0.58rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  color: #c9d1d9;
+  background: rgba(110, 118, 129, 0.18);
+  cursor: pointer;
+  transition: transform 130ms ease, border-color 130ms ease, background-color 130ms ease;
+}
+
+.composer__voice:hover {
+  transform: translateY(-1px);
+  border-color: rgba(88, 166, 255, 0.48);
+  background: rgba(56, 139, 253, 0.16);
+}
+
+.composer__voice--active {
+  border-color: rgba(238, 106, 106, 0.66);
+  background: rgba(248, 81, 73, 0.22);
+  color: #ffa198;
+}
+
 .composer__send:hover:enabled {
   transform: translateY(-1px) scale(1.01);
   background: #388bfd;
@@ -352,6 +381,38 @@ a {
 
 .composer__send-label {
   display: inline;
+}
+
+.voice-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.voice-controls__toggle {
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 0.36rem 0.66rem;
+  font-size: 0.77rem;
+  color: #c9d1d9;
+  background: rgba(22, 27, 34, 0.88);
+  cursor: pointer;
+}
+
+.voice-controls__toggle--on {
+  border-color: rgba(88, 166, 255, 0.48);
+  background: rgba(56, 139, 253, 0.2);
+  color: #d3e7ff;
+}
+
+.voice-controls__status {
+  font-size: 0.78rem;
+  color: #8b949e;
+}
+
+.voice-controls__status--warning {
+  color: #d29922;
 }
 
 .quick-actions {
@@ -379,7 +440,9 @@ a {
 
 .composer__input:focus-visible,
 .composer__send:focus-visible,
+.composer__voice:focus-visible,
 .quick-actions__chip:focus-visible,
+.voice-controls__toggle:focus-visible,
 .scheme-card__link:focus-visible {
   outline: 2px solid #58a6ff;
   outline-offset: 2px;
@@ -438,11 +501,15 @@ a {
 
   .composer__input {
     min-height: 74px;
-    padding-right: 4.35rem;
+    padding-right: 7.6rem;
   }
 
   .composer__send-label {
     display: none;
+  }
+
+  .composer__voice {
+    right: 3.8rem;
   }
 }
 

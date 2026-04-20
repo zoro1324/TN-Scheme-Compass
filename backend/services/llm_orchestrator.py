@@ -98,6 +98,7 @@ class LLMOrchestrator:
         follow_up_question: str | None,
         can_recommend: bool,
         missing_fields: list[str],
+        scheme_count: int,
     ) -> str:
         if not can_recommend:
             llm_response = self._chat(
@@ -126,6 +127,13 @@ class LLMOrchestrator:
                 )
 
             return "I can match you accurately once I have your basic eligibility details."
+
+        if scheme_count == 0:
+            return (
+                "I could not find a confident exact match from the currently indexed schemes for your profile. "
+                "Try asking for student scholarships, education assistance, or skill-development schemes in Tamil Nadu, "
+                "and I can refine the search further."
+            )
 
         llm_response = self._chat(
             "You are a Tamil Nadu welfare schemes expert assistant.",

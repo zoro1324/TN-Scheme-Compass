@@ -27,6 +27,10 @@ export default function App() {
   const [sessionError, setSessionError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [draft, setDraft] = useState("");
+  const [voiceSupported, setVoiceSupported] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [voiceError, setVoiceError] = useState("");
+  const [autoSpeak, setAutoSpeak] = useState(false);
   const [messages, setMessages] = useState([
     createMessage(
       "assistant",
@@ -34,6 +38,71 @@ export default function App() {
     ),
   ]);
   const listEndRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const draftRef = useRef("");
+
+  useEffect(() => {
+    draftRef.current = draft;
+  }, [draft]);
+
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setVoiceSupported(false);
+      return;
+    }
+
+    setVoiceSupported(true);
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
+    recognition.continuous = false;
+
+    recognition.onresult = (event) => {
+      let finalTranscript = "";
+      let interimTranscript = "";
+
+      for (let i = event.resultIndex; i < event.results.length; i += 1) {
+        const chunk = event.results[i][0]?.transcript || "";
+        if (event.results[i].isFinal) {
+          finalTranscript += `${chunk} `;
+        } else {
+          interimTranscript += `${chunk} `;
+        }
+      }
+
+      const spokenText = (finalTranscript || interimTranscript).trim();
+      if (!spokenText) return;
+
+      setDraft(() => {
+        const existing = draftRef.current.trim();
+        return existing ? `${existing} ${spokenText}` : spokenText;
+      });
+    };
+
+    recognition.onerror = (event) => {
+      if (event.error === "no-speech") {
+        setVoiceError("No voice detected. Please try again.");
+      } else if (event.error === "not-allowed") {
+        setVoiceError("Microphone access is blocked. Allow mic permission to use voice chat.");
+      } else {
+        setVoiceError("Voice input failed. Please try again.");
+      }
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+
+    return () => {
+      recognition.stop();
+      window.speechSynthesis?.cancel();
+    };
+  }, []);
 
   useEffect(() => {
     const boot = async () => {
@@ -53,6 +122,23 @@ export default function App() {
   useEffect(() => {
     listEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (!autoSpeak) return;
+    if (!messages.length) return;
+
+    const latest = messages[messages.length - 1];
+    if (latest.role !== "assistant") return;
+    if (latest.variant === "warning") return;
+    if (!window.speechSynthesis) return;
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(latest.text);
+    utterance.lang = "en-IN";
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+  }, [messages, autoSpeak]);
 
   const canSend = useMemo(() => Boolean(draft.trim()) && Boolean(sessionId) && !loading, [draft, sessionId, loading]);
 
@@ -94,6 +180,44 @@ export default function App() {
     setDraft((prev) => {
       if (!prev.trim()) return action;
       return `${prev.trim()} ${action.toLowerCase()}`;
+    });
+  };
+
+  const toggleListening = () => {
+    if (!voiceSupported || !recognitionRef.current) {
+      setVoiceError("Voice input is not supported in this browser.");
+      return;
+    }
+
+    setVoiceError("");
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+      return;
+    }
+
+    try {
+      recognitionRef.current.start();
+      setIsListening(true);
+    } catch {
+      setVoiceError("Unable to start microphone. Please try again.");
+      setIsListening(false);
+    }
+  };
+
+  const toggleAutoSpeak = () => {
+    if (!window.speechSynthesis) {
+      setVoiceError("Text-to-speech is not supported in this browser.");
+      return;
+    }
+
+    setVoiceError("");
+    setAutoSpeak((prev) => {
+      if (prev) {
+        window.speechSynthesis.cancel();
+      }
+      return !prev;
     });
   };
 
@@ -140,6 +264,15 @@ export default function App() {
                 className="composer__input"
               />
               <button
+                type="button"
+                className={`composer__voice ${isListening ? "composer__voice--active" : ""}`}
+                onClick={toggleListening}
+                aria-label={isListening ? "Stop voice input" : "Start voice input"}
+                title={isListening ? "Stop voice input" : "Start voice input"}
+              >
+                🎙
+              </button>
+              <button
                 type="submit"
                 disabled={!canSend}
                 className="composer__send"
@@ -148,6 +281,18 @@ export default function App() {
                 <span aria-hidden="true">➤</span>
                 <span className="composer__send-label">Send</span>
               </button>
+            </div>
+            <div className="voice-controls" aria-live="polite">
+              <button
+                type="button"
+                className={`voice-controls__toggle ${autoSpeak ? "voice-controls__toggle--on" : ""}`}
+                onClick={toggleAutoSpeak}
+              >
+                {autoSpeak ? "Voice replies on" : "Voice replies off"}
+              </button>
+              {isListening && <span className="voice-controls__status">Listening...</span>}
+              {!voiceSupported && <span className="voice-controls__status voice-controls__status--warning">Voice input not supported in this browser.</span>}
+              {voiceError && <span className="voice-controls__status voice-controls__status--warning">{voiceError}</span>}
             </div>
             <div className="quick-actions" aria-label="Quick actions">
               {quickActions.map((action) => (
