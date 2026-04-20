@@ -29,10 +29,12 @@ class ChatService:
         db.refresh(session)
         return session
 
-    def handle_message(self, db: Session, session_id: str, message: str) -> dict[str, Any]:
+    def handle_message(self, db: Session, session_id: str, message: str, language: str = "en") -> dict[str, Any]:
         session = db.query(ChatSession).filter(ChatSession.id == session_id).first()
         if not session:
             raise ValueError("Session not found")
+
+        language = "ta" if language == "ta" else "en"
 
         profile_row = db.query(UserProfile).filter(UserProfile.session_id == session_id).first()
         profile = json.loads(profile_row.profile_json) if profile_row and profile_row.profile_json else {}
@@ -41,6 +43,7 @@ class ChatService:
 
         updates = self.llm.extract_profile_updates(message=message, current_profile=profile)
         profile.update(updates)
+        profile["preferred_language"] = language
 
         if profile_row:
             profile_row.profile_json = json.dumps(profile)
@@ -54,7 +57,7 @@ class ChatService:
 
         if can_recommend:
             schemes = self._get_relevant_schemes(db, message, profile)
-            scheme_cards = [self._to_scheme_card(s, profile) for s in schemes]
+            scheme_cards = [self._to_scheme_card(s, profile, language=language) for s in schemes]
             context = self._build_scheme_context(schemes)
 
         follow_up = self.llm.dynamic_follow_up_question(
@@ -62,6 +65,7 @@ class ChatService:
             profile=profile,
             missing_fields=missing_fields,
             scheme_context=context,
+            language=language,
         )
 
         reply = self.llm.compose_reply(
@@ -72,6 +76,7 @@ class ChatService:
             can_recommend=can_recommend,
             missing_fields=missing_fields,
             scheme_count=len(scheme_cards),
+            language=language,
         )
 
         db.add(ChatMessage(session_id=session_id, role="assistant", content=reply, meta_json=json.dumps({"follow_up": follow_up})))
@@ -142,22 +147,38 @@ class ChatService:
             )
         return "\n".join(lines)
 
-    def _to_scheme_card(self, scheme: Scheme, profile: dict[str, Any]) -> SchemeCard:
+    def _to_scheme_card(self, scheme: Scheme, profile: dict[str, Any], language: str = "en") -> SchemeCard:
         reason_parts = []
         scheme_text = self._scheme_text(scheme)
 
+        labels = {
+            "target_match": "Target beneficiaries match your profile",
+            "income_note": "Scheme income note",
+            "age_note": "Scheme age note",
+            "student_match": "Education/student criteria appear relevant",
+            "fallback": "Ranked relevant to your query",
+        }
+        if language == "ta":
+            labels = {
+                "target_match": "இந்த திட்டத்தின் பயனாளர்கள் உங்கள் சுயவிவரத்துடன் பொருந்துகின்றனர்",
+                "income_note": "திட்ட வருமான குறிப்பு",
+                "age_note": "திட்ட வயது குறிப்பு",
+                "student_match": "கல்வி/மாணவர் தகுதி தொடர்புடையதாக தெரிகிறது",
+                "fallback": "உங்கள் கேள்விக்கு தொடர்புடையதாக தரவரிசைப்படுத்தப்பட்டது",
+            }
+
         if profile.get("gender") and profile["gender"].lower() in scheme_text:
-            reason_parts.append("Target beneficiaries match your profile")
+            reason_parts.append(labels["target_match"])
         if profile.get("income") and scheme.income_limit:
-            reason_parts.append(f"Scheme income note: {scheme.income_limit}")
+            reason_parts.append(f"{labels['income_note']}: {scheme.income_limit}")
         if profile.get("age") and scheme.age_range:
-            reason_parts.append(f"Scheme age note: {scheme.age_range}")
+            reason_parts.append(f"{labels['age_note']}: {scheme.age_range}")
         if profile.get("occupation") and "student" in str(profile["occupation"]).lower() and any(
             token in scheme_text for token in ["student", "scholarship", "education", "college", "school"]
         ):
-            reason_parts.append("Education/student criteria appear relevant")
+            reason_parts.append(labels["student_match"])
         if not reason_parts:
-            reason_parts.append("Ranked relevant to your query")
+            reason_parts.append(labels["fallback"])
 
         return SchemeCard(
             scheme_id=scheme.scheme_id,
