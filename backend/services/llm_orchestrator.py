@@ -112,7 +112,37 @@ class LLMOrchestrator:
         profile: dict[str, Any],
         scheme_context: str,
         follow_up_question: str | None,
+        can_recommend: bool,
+        missing_fields: list[str],
     ) -> str:
+        if not can_recommend:
+            llm_response = self._chat(
+                "You are a Tamil Nadu welfare eligibility intake assistant.",
+                (
+                    "You must collect required user details before recommending schemes.\n"
+                    f"User message: {user_message}\n"
+                    f"Known profile: {json.dumps(profile)}\n"
+                    f"Missing fields: {missing_fields}\n"
+                    f"Follow-up question to end with: {follow_up_question or 'None'}\n"
+                    "Rules: Do not list or suggest any scheme yet.\n"
+                    "Briefly explain you need profile details to find the best eligible match.\n"
+                    "Ask only one follow-up question at the end.\n"
+                    "No bullet list. Keep it concise and friendly."
+                ),
+                max_tokens=170,
+                temperature=0.3,
+            )
+            if llm_response:
+                return llm_response
+
+            if follow_up_question:
+                return (
+                    "I can find the best scheme matches for you, but I need a few profile details first to avoid blind recommendations. "
+                    f"{follow_up_question}"
+                )
+
+            return "I can match you accurately once I have your basic eligibility details."
+
         llm_response = self._chat(
             "You are a Tamil Nadu welfare schemes expert assistant.",
             (
@@ -141,19 +171,36 @@ class LLMOrchestrator:
         text = message.lower()
         updates: dict[str, Any] = {}
 
-        age_match = re.search(r"\b(?:age\s*(?:is|:)?\s*)?(\d{1,2})\b", text)
+        age_match = re.search(r"\bage\s*(?:is|:)?\s*(\d{1,2})\b|\b(\d{1,2})\s*(?:years old|yrs old|yo)\b", text)
         if age_match:
-            age = int(age_match.group(1))
+            age_text = age_match.group(1) or age_match.group(2)
+            age = int(age_text)
             if 0 < age < 120:
                 updates["age"] = age
 
-        income_match = re.search(r"(?:income|salary|earn|annual).*?(\d[\d,]*)", text)
+        income_match = re.search(
+            r"(?:income|salary|earn(?:ing)?s?|annual|family income|father'?s income|mother'?s income).*?(\d[\d,]*(?:\.\d+)?)\s*(k|thousand|lakh|lakhs|crore|crores)?",
+            text,
+        )
         if income_match:
-            updates["income"] = int(income_match.group(1).replace(",", ""))
+            amount = float(income_match.group(1).replace(",", ""))
+            unit = (income_match.group(2) or "").strip()
+            multiplier = 1
+            if unit in {"k", "thousand"}:
+                multiplier = 1_000
+            elif unit in {"lakh", "lakhs"}:
+                multiplier = 100_000
+            elif unit in {"crore", "crores"}:
+                multiplier = 10_000_000
+
+            updates["income"] = int(amount * multiplier)
 
         residence_match = re.search(r"(?:lived|living|residing|residence).*?(\d{1,2})\s*(?:years|yrs)", text)
         if residence_match:
             updates["residence_years"] = int(residence_match.group(1))
+        elif re.search(r"\b(?:native|origin|from tamil nadu|born in tamil nadu)\b", text):
+            # Treat explicit Tamil Nadu nativity as long-term residence for ranking hints.
+            updates["residence_years"] = 99
 
         for gender in ["male", "female", "transgender", "other"]:
             if re.search(rf"\b{gender}\b", text):
@@ -166,8 +213,12 @@ class LLMOrchestrator:
                 updates["caste"] = normalized
                 break
 
-        occupation_match = re.search(r"(?:i am|i'm|working as|occupation is)\s+([a-z ]{3,40})", text)
+        occupation_match = re.search(r"(?:i am|i'm|working as|occupation is)\s+([^\n\.,;]{2,60})", text)
         if occupation_match:
-            updates["occupation"] = occupation_match.group(1).strip()
+            raw = occupation_match.group(1).strip()
+            raw = re.split(r"\band\b|\bmy\b|\bage\b|\bincome\b", raw)[0].strip()
+            raw = re.sub(r"^(a|an)\s+", "", raw).strip()
+            if raw:
+                updates["occupation"] = raw
 
         return updates

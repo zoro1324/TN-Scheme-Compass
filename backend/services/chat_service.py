@@ -14,6 +14,8 @@ class ChatService:
     def __init__(self, vector_store: SchemeVectorStore, llm: LLMOrchestrator):
         self.vector_store = vector_store
         self.llm = llm
+        # Keep eligibility intake lightweight: only block on high-signal fields.
+        self.required_profile_fields = ["age", "income", "occupation"]
 
     def create_session(self, db: Session) -> ChatSession:
         session = ChatSession()
@@ -42,11 +44,17 @@ class ChatService:
         if profile_row:
             profile_row.profile_json = json.dumps(profile)
 
-        schemes = self._get_relevant_schemes(db, message, profile)
-        scheme_cards = [self._to_scheme_card(s, profile) for s in schemes]
+        missing_fields = [f for f in self.required_profile_fields if not self._has_profile_value(profile, f)]
 
-        missing_fields = [f for f in ["age", "income", "gender", "caste", "occupation", "residence_years"] if f not in profile]
-        context = self._build_scheme_context(schemes)
+        schemes: list[Scheme] = []
+        scheme_cards: list[SchemeCard] = []
+        context = ""
+        can_recommend = not missing_fields
+
+        if can_recommend:
+            schemes = self._get_relevant_schemes(db, message, profile)
+            scheme_cards = [self._to_scheme_card(s, profile) for s in schemes]
+            context = self._build_scheme_context(schemes)
 
         follow_up = self.llm.dynamic_follow_up_question(
             user_message=message,
@@ -60,6 +68,8 @@ class ChatService:
             profile=profile,
             scheme_context=context,
             follow_up_question=follow_up,
+            can_recommend=can_recommend,
+            missing_fields=missing_fields,
         )
 
         db.add(ChatMessage(session_id=session_id, role="assistant", content=reply, meta_json=json.dumps({"follow_up": follow_up})))
@@ -71,6 +81,14 @@ class ChatService:
             "schemes": scheme_cards,
             "profile": profile,
         }
+
+    def _has_profile_value(self, profile: dict[str, Any], field: str) -> bool:
+        value = profile.get(field)
+        if value is None:
+            return False
+        if isinstance(value, str):
+            return bool(value.strip())
+        return True
 
     def get_history(self, db: Session, session_id: str) -> dict[str, Any]:
         session = db.query(ChatSession).filter(ChatSession.id == session_id).first()

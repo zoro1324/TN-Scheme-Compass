@@ -74,11 +74,7 @@ export default function App() {
       const payload = response.data;
 
       setMessages((prev) => {
-        const next = [...prev, createMessage("assistant", payload.reply, payload.schemes || [])];
-        if (payload.follow_up_question) {
-          next.push(createMessage("assistant", `Next question: ${payload.follow_up_question}`));
-        }
-        return next;
+        return [...prev, createMessage("assistant", payload.reply, payload.schemes || [])];
       });
     } catch (err) {
       const detail = err?.response?.data?.detail || err.message;
