@@ -64,3 +64,70 @@ ollama pull llama3:8b
 - This is a one-time extraction pipeline by default.
 - It prioritizes Tamil Nadu state schemes and central schemes applicable to Tamil Nadu residents.
 - It stores only public scheme metadata, not personal beneficiary data.
+
+## Web Application Stack (New)
+
+This repository now includes a full web application for scheme-aware conversations:
+
+- Frontend: React + Tailwind CSS (`frontend/`)
+- Backend API: FastAPI (`backend/`)
+- Relational DB: MySQL (chat sessions + scheme master data)
+- Vector DB: Chroma (scheme retrieval for contextual answers)
+
+### 1) Configure environment
+
+Copy `.env.example` to `.env` and set:
+
+- `MYSQL_URL`
+- `GROQ_API_KEY`
+- `SCHEME_CSV_PATH` (defaults to generated TN schemes CSV)
+
+If MySQL auth fails with error `1045 Access denied`, use either:
+
+- `MYSQL_URL=mysql+pymysql://<user>:<password>@localhost:3306/tn_scheme_compass`
+- Or set `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE` (leave `MYSQL_URL` empty)
+
+Create DB and user (run in MySQL shell as an admin user):
+
+```sql
+CREATE DATABASE IF NOT EXISTS tn_scheme_compass CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'tn_user'@'localhost' IDENTIFIED BY 'StrongPassword123!';
+GRANT ALL PRIVILEGES ON tn_scheme_compass.* TO 'tn_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+Then set:
+
+```env
+MYSQL_USER=tn_user
+MYSQL_PASSWORD=StrongPassword123!
+MYSQL_DATABASE=tn_scheme_compass
+```
+
+### 2) Install backend dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3) Run FastAPI server
+
+```bash
+python run_api.py
+```
+
+API endpoints:
+
+- `POST /api/chat/session` to create a chat session
+- `POST /api/chat/message` to send a user message and get dynamic follow-up + scheme details
+- `GET /api/chat/history/{session_id}` to fetch full conversation history
+
+### 4) Run React frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173`.

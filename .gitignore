@@ -19,3 +19,8 @@ outputs/
 .DS_Store
 Thumbs.db
 .vscode/
+
+
+node_modules/
+
+chroma_store/
