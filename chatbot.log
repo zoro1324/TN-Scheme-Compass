@@ -1,0 +1,379 @@
+2026-04-19 23:41:52,809 - chatbot.cli - INFO - Loading schemes from: tn_welfare_schemes.xlsx
+2026-04-19 23:41:53,175 - chatbot.cli - INFO - Loaded 80 schemes
+2026-04-19 23:41:53,175 - chatbot.cli - INFO - Initializing chatbot components...
+2026-04-19 23:41:53,175 - chatbot.translator - INFO - Translator initialized (offline mode)
+2026-04-19 23:41:53,176 - chatbot.rag_retriever - ERROR - chromadb not installed. Install with: pip install chromadb
+2026-04-19 23:41:53,176 - chatbot.rag_retriever - ERROR - Vector DB not initialized
+2026-04-19 23:41:53,176 - chatbot.cli - WARNING - Failed to build RAG index
+2026-04-19 23:41:55,229 - chatbot.llm_responder - INFO - Initializing Groq client with model: mixtral-8x7b-32768
+2026-04-19 23:41:55,589 - chatbot.llm_responder - INFO - Groq client initialized successfully
+2026-04-19 23:41:55,589 - chatbot.whisper_stt - ERROR - Whisper not installed. Install with: pip install openai-whisper
+2026-04-19 23:41:55,590 - chatbot.offline_tts - ERROR - pyttsx3 not installed. Install with: pip install pyttsx3
+2026-04-19 23:41:55,590 - chatbot.cli - INFO - Speech components initialized
+2026-04-19 23:41:55,590 - chatbot.cli - INFO - All components initialized successfully
+2026-04-19 23:41:55,590 - chatbot.cli - INFO - Chatbot started
+2026-04-19 23:42:07,477 - chatbot.cli - INFO - Chatbot interrupted by user
+2026-04-19 23:45:48,926 - chatbot.cli - INFO - Loading schemes from: tn_welfare_schemes.xlsx
+2026-04-19 23:45:49,185 - chatbot.cli - INFO - Loaded 80 schemes
+2026-04-19 23:45:49,185 - chatbot.cli - INFO - Initializing chatbot components...
+2026-04-19 23:45:49,185 - chatbot.translator - INFO - Translator initialized (offline mode)
+2026-04-19 23:45:51,353 - chatbot.rag_retriever - INFO - Initializing ChromaDB vector database...
+2026-04-19 23:45:52,618 - chatbot.rag_retriever - INFO - ChromaDB initialized successfully
+2026-04-19 23:45:52,619 - chatbot.rag_retriever - INFO - Building index for 80 schemes...
+2026-04-19 23:45:54,635 - httpx - INFO - HTTP Request: GET https://chroma-onnx-models.s3.amazonaws.com/all-MiniLM-L6-v2/onnx.tar.gz "HTTP/1.1 200 OK"
+2026-04-19 23:46:21,087 - chatbot.rag_retriever - INFO - Index built successfully with 80 schemes
+2026-04-19 23:46:21,143 - chatbot.llm_responder - INFO - Initializing Groq client with model: mixtral-8x7b-32768
+2026-04-19 23:46:21,417 - chatbot.llm_responder - INFO - Groq client initialized successfully
+2026-04-19 23:46:29,940 - chatbot.whisper_stt - INFO - Loading Whisper model (base)...
+2026-04-19 23:47:00,707 - chatbot.whisper_stt - INFO - Whisper model loaded successfully
+2026-04-19 23:47:00,710 - chatbot.offline_tts - INFO - Initializing TTS engine...
+2026-04-19 23:47:00,754 - comtypes.client._code_cache - INFO - Could not import comtypes.gen, trying to create it.
+2026-04-19 23:47:00,754 - comtypes.client._code_cache - INFO - Created comtypes.gen directory: 'C:\Users\navee\AppData\Local\Programs\Python\Python311\Lib\site-packages\comtypes\gen'
+2026-04-19 23:47:00,755 - comtypes.client._code_cache - INFO - Writing __init__.py file: 'C:\Users\navee\AppData\Local\Programs\Python\Python311\Lib\site-packages\comtypes\gen\__init__.py'
+2026-04-19 23:47:00,785 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\navee\AppData\Local\Programs\Python\Python311\Lib\site-packages\comtypes\gen'
+2026-04-19 23:47:00,812 - comtypes.client._generate - INFO - Could not import comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4: No module named 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4'
+2026-04-19 23:47:00,815 - comtypes.client._generate - INFO - # Generating comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4
+2026-04-19 23:47:00,876 - comtypes.client._generate - INFO - # Generating comtypes.gen.SpeechLib
+2026-04-19 23:47:00,883 - comtypes.client._generate - INFO - Could not import comtypes.gen._00020430_0000_0000_C000_000000000046_0_2_0: No module named 'comtypes.gen._00020430_0000_0000_C000_000000000046_0_2_0'
+2026-04-19 23:47:00,884 - comtypes.client._generate - INFO - # Generating comtypes.gen._00020430_0000_0000_C000_000000000046_0_2_0
+2026-04-19 23:47:00,889 - comtypes.client._generate - INFO - # Generating comtypes.gen.stdole
+2026-04-19 23:47:01,312 - chatbot.offline_tts - INFO - Available voices: 2
+2026-04-19 23:47:01,312 - chatbot.offline_tts - INFO - TTS engine initialized successfully
+2026-04-19 23:47:01,312 - chatbot.cli - INFO - Speech components initialized
+2026-04-19 23:47:01,312 - chatbot.cli - INFO - All components initialized successfully
+2026-04-19 23:47:01,312 - chatbot.cli - INFO - Chatbot started
+2026-04-19 23:47:15,770 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:47:25,982 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:47:26,001 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:47:26,001 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:47:36,079 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:47:36,080 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:47:36,081 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:47:38,085 - chatbot.whisper_stt - INFO - Recording interrupted by user
+2026-04-19 23:47:38,109 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:47:38,112 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:47:38,113 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:47:40,369 - chatbot.whisper_stt - INFO - Recording interrupted by user
+2026-04-19 23:47:40,390 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:47:40,395 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:47:40,396 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:47:40,741 - chatbot.whisper_stt - INFO - Recording interrupted by user
+2026-04-19 23:47:40,767 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:47:40,770 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:47:40,771 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:47:40,975 - chatbot.whisper_stt - INFO - Recording interrupted by user
+2026-04-19 23:47:40,997 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:47:41,001 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:47:41,002 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:47:41,211 - chatbot.whisper_stt - INFO - Recording interrupted by user
+2026-04-19 23:47:41,237 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:47:41,241 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:47:41,242 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:47:41,513 - chatbot.whisper_stt - INFO - Recording interrupted by user
+2026-04-19 23:47:41,541 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:47:41,543 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:47:41,545 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:47:41,827 - chatbot.whisper_stt - INFO - Recording interrupted by user
+2026-04-19 23:47:41,849 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:47:41,852 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:47:41,853 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:47:54,319 - chatbot.cli - INFO - Loading schemes from: tn_welfare_schemes.xlsx
+2026-04-19 23:47:54,564 - chatbot.cli - INFO - Loaded 80 schemes
+2026-04-19 23:47:54,565 - chatbot.cli - INFO - Initializing chatbot components...
+2026-04-19 23:47:54,565 - chatbot.translator - INFO - Translator initialized (offline mode)
+2026-04-19 23:47:55,517 - chatbot.rag_retriever - INFO - Initializing ChromaDB vector database...
+2026-04-19 23:47:55,598 - chatbot.rag_retriever - INFO - ChromaDB initialized successfully
+2026-04-19 23:47:55,599 - chatbot.rag_retriever - INFO - Building index for 80 schemes...
+2026-04-19 23:47:57,491 - chatbot.rag_retriever - INFO - Index built successfully with 80 schemes
+2026-04-19 23:47:57,583 - chatbot.llm_responder - INFO - Initializing Groq client with model: mixtral-8x7b-32768
+2026-04-19 23:47:57,888 - chatbot.llm_responder - INFO - Groq client initialized successfully
+2026-04-19 23:48:00,218 - chatbot.whisper_stt - INFO - Loading Whisper model (base)...
+2026-04-19 23:48:01,176 - chatbot.whisper_stt - INFO - Whisper model loaded successfully
+2026-04-19 23:48:01,181 - chatbot.offline_tts - INFO - Initializing TTS engine...
+2026-04-19 23:48:01,233 - comtypes.client._code_cache - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\navee\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-04-19 23:48:01,234 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\navee\AppData\Local\Programs\Python\Python311\Lib\site-packages\comtypes\gen'
+2026-04-19 23:48:01,346 - chatbot.offline_tts - INFO - Available voices: 2
+2026-04-19 23:48:01,346 - chatbot.offline_tts - INFO - TTS engine initialized successfully
+2026-04-19 23:48:01,346 - chatbot.cli - INFO - Speech components initialized
+2026-04-19 23:48:01,346 - chatbot.cli - INFO - All components initialized successfully
+2026-04-19 23:48:01,346 - chatbot.cli - INFO - Chatbot started
+2026-04-19 23:48:08,552 - chatbot.translator - WARNING - Language detection failed: No features in text., defaulting to English
+2026-04-19 23:48:23,469 - chatbot.translator - WARNING - Language detection failed: No features in text., defaulting to English
+2026-04-19 23:48:26,367 - chatbot.translator - WARNING - Unsupported language detected: it, defaulting to English
+2026-04-19 23:48:30,177 - chatbot.translator - WARNING - Unsupported language detected: de, defaulting to English
+2026-04-19 23:48:33,106 - chatbot.translator - WARNING - Unsupported language detected: de, defaulting to English
+2026-04-19 23:48:39,954 - chatbot.translator - WARNING - Unsupported language detected: no, defaulting to English
+2026-04-19 23:48:43,876 - chatbot.translator - WARNING - Language detection failed: No features in text., defaulting to English
+2026-04-19 23:48:48,511 - chatbot.translator - WARNING - Unsupported language detected: tl, defaulting to English
+2026-04-19 23:48:50,790 - chatbot.translator - WARNING - Unsupported language detected: no, defaulting to English
+2026-04-19 23:48:58,711 - chatbot.translator - WARNING - Language detection failed: No features in text., defaulting to English
+2026-04-19 23:48:58,712 - chatbot.eligibility_matcher - INFO - Matching schemes against 10 criteria...
+2026-04-19 23:48:58,713 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,713 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,713 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,714 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,714 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:48:58,714 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,715 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:48:58,715 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:48:58,715 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,715 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (government college students)'
+2026-04-19 23:48:58,715 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,716 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,716 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,716 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,716 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,717 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:48:58,717 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,718 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,718 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,718 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:48:58,718 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,719 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:48:58,719 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit'
+2026-04-19 23:48:58,720 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,720 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,720 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (government school students)'
+2026-04-19 23:48:58,720 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (government school students)'
+2026-04-19 23:48:58,721 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (government school students)'
+2026-04-19 23:48:58,721 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (government school students)'
+2026-04-19 23:48:58,722 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,722 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Annual income below Rs.2.5 lakh'
+2026-04-19 23:48:58,722 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,722 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,723 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit'
+2026-04-19 23:48:58,723 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,723 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,723 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Annual family income up to Rs.2.5 lakh'
+2026-04-19 23:48:58,724 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Annual family income up to Rs.2.5 lakh'
+2026-04-19 23:48:58,724 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Annual family income up to Rs.2 lakh'
+2026-04-19 23:48:58,724 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,724 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,724 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,725 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,725 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (construction workers)'
+2026-04-19 23:48:58,725 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (plantation workers)'
+2026-04-19 23:48:58,726 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,726 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,727 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,727 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (ex-servicemen)'
+2026-04-19 23:48:58,728 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,728 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,729 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,729 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,729 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,729 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,730 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,730 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit'
+2026-04-19 23:48:58,730 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit'
+2026-04-19 23:48:58,730 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (unorganised sector)'
+2026-04-19 23:48:58,731 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (traditional artisans/craftsmen)'
+2026-04-19 23:48:58,731 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,731 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,732 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,732 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'BPL'
+2026-04-19 23:48:58,732 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'BPL'
+2026-04-19 23:48:58,732 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,733 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,733 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,733 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,733 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,734 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Annual family income up to Rs.4.5 lakh'
+2026-04-19 23:48:58,734 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,735 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,735 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Small/marginal farmers only (up to 2 ha land)'
+2026-04-19 23:48:58,735 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Monthly income up to Rs.15000'
+2026-04-19 23:48:58,736 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,736 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Rural poor households'
+2026-04-19 23:48:58,736 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,736 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,737 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:48:58,737 - chatbot.eligibility_matcher - INFO - Found 0 matching schemes
+2026-04-19 23:50:39,482 - chatbot.cli - INFO - Loading schemes from: tn_welfare_schemes.xlsx
+2026-04-19 23:50:39,717 - chatbot.cli - INFO - Loaded 80 schemes
+2026-04-19 23:50:39,717 - chatbot.cli - INFO - Initializing chatbot components...
+2026-04-19 23:50:39,718 - chatbot.translator - INFO - Translator initialized (offline mode)
+2026-04-19 23:50:40,666 - chatbot.rag_retriever - INFO - Initializing ChromaDB vector database...
+2026-04-19 23:50:40,749 - chatbot.rag_retriever - INFO - ChromaDB initialized successfully
+2026-04-19 23:50:40,750 - chatbot.rag_retriever - INFO - Building index for 80 schemes...
+2026-04-19 23:50:42,624 - chatbot.rag_retriever - INFO - Index built successfully with 80 schemes
+2026-04-19 23:50:42,720 - chatbot.llm_responder - INFO - Initializing Groq client with model: mixtral-8x7b-32768
+2026-04-19 23:50:43,031 - chatbot.llm_responder - INFO - Groq client initialized successfully
+2026-04-19 23:50:45,499 - chatbot.whisper_stt - INFO - Loading Whisper model (base)...
+2026-04-19 23:50:46,514 - chatbot.whisper_stt - INFO - Whisper model loaded successfully
+2026-04-19 23:50:46,519 - chatbot.offline_tts - INFO - Initializing TTS engine...
+2026-04-19 23:50:46,567 - comtypes.client._code_cache - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\navee\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-04-19 23:50:46,567 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\navee\AppData\Local\Programs\Python\Python311\Lib\site-packages\comtypes\gen'
+2026-04-19 23:50:46,686 - chatbot.offline_tts - INFO - Available voices: 2
+2026-04-19 23:50:46,687 - chatbot.offline_tts - INFO - TTS engine initialized successfully
+2026-04-19 23:50:46,687 - chatbot.cli - INFO - Speech components initialized
+2026-04-19 23:50:46,687 - chatbot.cli - INFO - All components initialized successfully
+2026-04-19 23:50:46,687 - chatbot.cli - INFO - Chatbot started
+2026-04-19 23:52:02,916 - chatbot.cli - INFO - Loading schemes from: tn_welfare_schemes.xlsx
+2026-04-19 23:52:03,142 - chatbot.cli - INFO - Loaded 80 schemes
+2026-04-19 23:52:03,143 - chatbot.cli - INFO - Initializing chatbot components...
+2026-04-19 23:52:03,143 - chatbot.translator - INFO - Translator initialized (offline mode)
+2026-04-19 23:52:04,054 - chatbot.rag_retriever - INFO - Initializing ChromaDB vector database...
+2026-04-19 23:52:04,131 - chatbot.rag_retriever - INFO - ChromaDB initialized successfully
+2026-04-19 23:52:04,132 - chatbot.rag_retriever - INFO - Building index for 80 schemes...
+2026-04-19 23:52:04,185 - chatbot.rag_retriever - INFO - Index built successfully with 80 schemes
+2026-04-19 23:52:04,275 - chatbot.llm_responder - INFO - Initializing Groq client with model: mixtral-8x7b-32768
+2026-04-19 23:52:04,575 - chatbot.llm_responder - INFO - Groq client initialized successfully
+2026-04-19 23:52:06,849 - chatbot.whisper_stt - INFO - Loading Whisper model (base)...
+2026-04-19 23:52:07,792 - chatbot.whisper_stt - INFO - Whisper model loaded successfully
+2026-04-19 23:52:07,795 - chatbot.offline_tts - INFO - Initializing TTS engine...
+2026-04-19 23:52:07,837 - comtypes.client._code_cache - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\navee\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-04-19 23:52:07,838 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\navee\AppData\Local\Programs\Python\Python311\Lib\site-packages\comtypes\gen'
+2026-04-19 23:52:07,952 - chatbot.offline_tts - INFO - Available voices: 2
+2026-04-19 23:52:07,952 - chatbot.offline_tts - INFO - TTS engine initialized successfully
+2026-04-19 23:52:07,952 - chatbot.cli - INFO - Speech components initialized
+2026-04-19 23:52:07,953 - chatbot.cli - INFO - All components initialized successfully
+2026-04-19 23:52:07,953 - chatbot.cli - INFO - Chatbot started
+2026-04-19 23:52:14,176 - chatbot.translator - WARNING - Language detection failed: No features in text., defaulting to English
+2026-04-19 23:52:19,941 - chatbot.translator - WARNING - Language detection failed: No features in text., defaulting to English
+2026-04-19 23:52:23,868 - chatbot.translator - WARNING - Unsupported language detected: ca, defaulting to English
+2026-04-19 23:52:27,441 - chatbot.translator - WARNING - Unsupported language detected: de, defaulting to English
+2026-04-19 23:52:30,984 - chatbot.translator - WARNING - Unsupported language detected: de, defaulting to English
+2026-04-19 23:52:36,753 - chatbot.translator - WARNING - Unsupported language detected: de, defaulting to English
+2026-04-19 23:52:39,040 - chatbot.translator - WARNING - Language detection failed: No features in text., defaulting to English
+2026-04-19 23:52:44,105 - chatbot.translator - WARNING - Unsupported language detected: tl, defaulting to English
+2026-04-19 23:52:46,171 - chatbot.translator - WARNING - Unsupported language detected: no, defaulting to English
+2026-04-19 23:52:49,102 - chatbot.translator - WARNING - Language detection failed: No features in text., defaulting to English
+2026-04-19 23:52:49,102 - chatbot.eligibility_matcher - INFO - Matching schemes against 10 criteria...
+2026-04-19 23:52:49,103 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,104 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,104 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,104 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,105 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:52:49,105 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,105 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:52:49,105 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:52:49,105 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,106 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (government college students)'
+2026-04-19 23:52:49,106 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,106 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,106 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,106 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,107 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,107 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:52:49,108 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,108 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,108 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,109 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:52:49,109 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,109 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Below Poverty Line'
+2026-04-19 23:52:49,109 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit'
+2026-04-19 23:52:49,110 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,110 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,110 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (government school students)'
+2026-04-19 23:52:49,110 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (government school students)'
+2026-04-19 23:52:49,111 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (government school students)'
+2026-04-19 23:52:49,111 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (government school students)'
+2026-04-19 23:52:49,111 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,111 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Annual income below Rs.2.5 lakh'
+2026-04-19 23:52:49,112 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,112 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,112 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit'
+2026-04-19 23:52:49,112 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,112 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,113 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Annual family income up to Rs.2.5 lakh'
+2026-04-19 23:52:49,113 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Annual family income up to Rs.2.5 lakh'
+2026-04-19 23:52:49,113 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Annual family income up to Rs.2 lakh'
+2026-04-19 23:52:49,113 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,114 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,114 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,114 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,114 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (construction workers)'
+2026-04-19 23:52:49,115 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (plantation workers)'
+2026-04-19 23:52:49,115 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,115 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,115 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,115 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (ex-servicemen)'
+2026-04-19 23:52:49,115 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,115 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,116 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,116 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,116 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,116 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,116 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,116 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit'
+2026-04-19 23:52:49,117 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit'
+2026-04-19 23:52:49,117 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (unorganised sector)'
+2026-04-19 23:52:49,117 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No income limit (traditional artisans/craftsmen)'
+2026-04-19 23:52:49,117 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,117 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,117 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,118 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'BPL'
+2026-04-19 23:52:49,118 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'BPL'
+2026-04-19 23:52:49,118 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,118 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,118 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,119 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,119 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,119 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Annual family income up to Rs.4.5 lakh'
+2026-04-19 23:52:49,119 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,119 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,119 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Small/marginal farmers only (up to 2 ha land)'
+2026-04-19 23:52:49,120 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Monthly income up to Rs.15000'
+2026-04-19 23:52:49,120 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,120 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'Rural poor households'
+2026-04-19 23:52:49,120 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,120 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,121 - chatbot.eligibility_matcher - ERROR - Error scoring scheme: could not convert string to float: 'No Limit'
+2026-04-19 23:52:49,121 - chatbot.eligibility_matcher - INFO - Found 0 matching schemes
+2026-04-19 23:54:28,325 - chatbot.cli - INFO - Loading schemes from: tn_welfare_schemes.xlsx
+2026-04-19 23:54:28,580 - chatbot.cli - INFO - Loaded 80 schemes
+2026-04-19 23:54:28,581 - chatbot.cli - INFO - Initializing chatbot components...
+2026-04-19 23:54:28,581 - chatbot.translator - INFO - Translator initialized (offline mode)
+2026-04-19 23:54:29,570 - chatbot.rag_retriever - INFO - Initializing ChromaDB vector database...
+2026-04-19 23:54:29,657 - chatbot.rag_retriever - INFO - ChromaDB initialized successfully
+2026-04-19 23:54:29,658 - chatbot.rag_retriever - INFO - Building index for 80 schemes...
+2026-04-19 23:54:29,708 - chatbot.rag_retriever - INFO - Index built successfully with 80 schemes
+2026-04-19 23:54:29,798 - chatbot.llm_responder - INFO - Initializing Groq client with model: mixtral-8x7b-32768
+2026-04-19 23:54:30,108 - chatbot.llm_responder - INFO - Groq client initialized successfully
+2026-04-19 23:54:32,405 - chatbot.whisper_stt - INFO - Loading Whisper model (base)...
+2026-04-19 23:54:33,336 - chatbot.whisper_stt - INFO - Whisper model loaded successfully
+2026-04-19 23:54:33,341 - chatbot.offline_tts - INFO - Initializing TTS engine...
+2026-04-19 23:54:33,389 - comtypes.client._code_cache - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\navee\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-04-19 23:54:33,390 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\navee\AppData\Local\Programs\Python\Python311\Lib\site-packages\comtypes\gen'
+2026-04-19 23:54:33,508 - chatbot.offline_tts - INFO - Available voices: 2
+2026-04-19 23:54:33,508 - chatbot.offline_tts - INFO - TTS engine initialized successfully
+2026-04-19 23:54:33,508 - chatbot.cli - INFO - Speech components initialized
+2026-04-19 23:54:33,508 - chatbot.cli - INFO - All components initialized successfully
+2026-04-19 23:54:33,508 - chatbot.cli - INFO - Chatbot started
+2026-04-19 23:54:34,804 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:54:37,946 - chatbot.whisper_stt - INFO - Recording interrupted by user
+2026-04-19 23:54:37,967 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:54:37,971 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:54:37,972 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:54:38,395 - chatbot.whisper_stt - INFO - Recording interrupted by user
+2026-04-19 23:54:38,413 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:54:38,417 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:54:38,417 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:54:38,581 - chatbot.whisper_stt - INFO - Recording interrupted by user
+2026-04-19 23:54:38,600 - chatbot.whisper_stt - ERROR - Failed to save audio file: [Errno 2] No such file or directory: '/tmp/recorded_audio.wav'
+2026-04-19 23:54:38,603 - chatbot.whisper_stt - WARNING - Failed to record audio
+2026-04-19 23:54:38,604 - chatbot.whisper_stt - INFO - Recording audio for 10 seconds...
+2026-04-19 23:54:50,986 - chatbot.cli - INFO - Loading schemes from: tn_welfare_schemes.xlsx
+2026-04-19 23:54:51,227 - chatbot.cli - INFO - Loaded 80 schemes
+2026-04-19 23:54:51,227 - chatbot.cli - INFO - Initializing chatbot components...
+2026-04-19 23:54:51,227 - chatbot.translator - INFO - Translator initialized (offline mode)
+2026-04-19 23:54:52,212 - chatbot.rag_retriever - INFO - Initializing ChromaDB vector database...
+2026-04-19 23:54:52,288 - chatbot.rag_retriever - INFO - ChromaDB initialized successfully
+2026-04-19 23:54:52,288 - chatbot.rag_retriever - INFO - Building index for 80 schemes...
+2026-04-19 23:54:52,340 - chatbot.rag_retriever - INFO - Index built successfully with 80 schemes
+2026-04-19 23:54:52,426 - chatbot.llm_responder - INFO - Initializing Groq client with model: mixtral-8x7b-32768
+2026-04-19 23:54:52,729 - chatbot.llm_responder - INFO - Groq client initialized successfully
+2026-04-19 23:54:55,027 - chatbot.whisper_stt - INFO - Loading Whisper model (base)...
+2026-04-19 23:54:55,955 - chatbot.whisper_stt - INFO - Whisper model loaded successfully
+2026-04-19 23:54:55,960 - chatbot.offline_tts - INFO - Initializing TTS engine...
+2026-04-19 23:54:56,011 - comtypes.client._code_cache - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\navee\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-04-19 23:54:56,012 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\navee\AppData\Local\Programs\Python\Python311\Lib\site-packages\comtypes\gen'
+2026-04-19 23:54:56,127 - chatbot.offline_tts - INFO - Available voices: 2
+2026-04-19 23:54:56,128 - chatbot.offline_tts - INFO - TTS engine initialized successfully
+2026-04-19 23:54:56,128 - chatbot.cli - INFO - Speech components initialized
+2026-04-19 23:54:56,128 - chatbot.cli - INFO - All components initialized successfully
+2026-04-19 23:54:56,129 - chatbot.cli - INFO - Chatbot started
+2026-04-19 23:55:30,134 - chatbot.translator - WARNING - Unsupported language detected: vi, defaulting to English
+2026-04-19 23:55:40,697 - chatbot.eligibility_matcher - INFO - Matching schemes against 10 criteria...
+2026-04-19 23:55:40,706 - chatbot.eligibility_matcher - INFO - Found 80 matching schemes
