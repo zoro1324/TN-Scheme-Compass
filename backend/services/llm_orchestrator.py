@@ -75,26 +75,11 @@ class LLMOrchestrator:
         profile: dict[str, Any],
         missing_fields: list[str],
         scheme_context: str,
+        language: str = "en",
     ) -> str | None:
         if not missing_fields:
             return None
-
-        llm_response = self._chat(
-            "You are an eligibility assistant. Ask exactly one concise follow-up question.",
-            (
-                "Ask one next-best question based on user intent and missing profile fields.\n"
-                f"Missing fields: {missing_fields}\n"
-                f"Known profile: {json.dumps(profile)}\n"
-                f"Recent user message: {user_message}\n"
-                f"Top scheme context: {scheme_context}\n"
-                "Constraints: ask only one question, no bullet list, no preamble, under 25 words."
-            ),
-            max_tokens=80,
-            temperature=0.5,
-        )
-        if llm_response:
-            return llm_response
-
+        # Deterministic single-question flow to avoid multi-part or repetitive prompts.
         field = missing_fields[0]
         fallback_questions = {
             "age": "What is your age?",
@@ -104,7 +89,22 @@ class LLMOrchestrator:
             "occupation": "What is your occupation right now?",
             "residence_years": "How many years have you lived in Tamil Nadu?",
         }
-        return fallback_questions.get(field, "Could you share a bit more about your profile for eligibility matching?")
+        if language == "ta":
+            fallback_questions = {
+                "age": "உங்கள் வயது என்ன?",
+                "income": "உங்கள் குடும்பத்தின் ஆண்டு வருமானம் (ரூபாயில்) எவ்வளவு?",
+                "gender": "உங்கள் பாலினம் என்ன?",
+                "caste": "நீங்கள் எந்த சமூக வகையைச் சேர்ந்தவர் (General, OBC, SC, ST)?",
+                "occupation": "தற்போது உங்கள் தொழில்/பணி என்ன?",
+                "residence_years": "நீங்கள் தமிழ்நாட்டில் எத்தனை ஆண்டுகள் வசித்து வருகிறீர்கள்?",
+            }
+
+        return fallback_questions.get(
+            field,
+            "Could you share a bit more about your profile for eligibility matching?"
+            if language != "ta"
+            else "தகுதி மதிப்பீட்டிற்காக உங்கள் சுயவிவரத்தைப் பற்றி இன்னும் சிறிது தகவல் பகிர முடியுமா?",
+        )
 
     def compose_reply(
         self,
@@ -112,7 +112,61 @@ class LLMOrchestrator:
         profile: dict[str, Any],
         scheme_context: str,
         follow_up_question: str | None,
+        can_recommend: bool,
+        missing_fields: list[str],
+        scheme_count: int,
+        language: str = "en",
     ) -> str:
+        target_language = "Tamil" if language == "ta" else "English"
+
+        if not can_recommend:
+            llm_response = self._chat(
+                "You are a Tamil Nadu welfare eligibility intake assistant.",
+                (
+                    "You must collect required user details before recommending schemes.\n"
+                    f"User message: {user_message}\n"
+                    f"Known profile: {json.dumps(profile)}\n"
+                    f"Missing fields: {missing_fields}\n"
+                    f"Follow-up question to end with: {follow_up_question or 'None'}\n"
+                    f"Respond in {target_language}.\n"
+                    "Rules: Do not list or suggest any scheme yet.\n"
+                    "Briefly explain you need profile details to find the best eligible match.\n"
+                    "Ask only one follow-up question at the end.\n"
+                    "No bullet list. Keep it concise and friendly."
+                ),
+                max_tokens=170,
+                temperature=0.3,
+            )
+            if llm_response:
+                return llm_response
+
+            if follow_up_question:
+                if language == "ta":
+                    return (
+                        "உங்களுக்கு சிறந்த திட்டங்களைத் துல்லியமாக பொருத்த நான் இன்னும் சில அடிப்படை விவரங்கள் தேவை. "
+                        f"{follow_up_question}"
+                    )
+                return (
+                    "I can find the best scheme matches for you, but I need a few profile details first to avoid blind recommendations. "
+                    f"{follow_up_question}"
+                )
+
+            if language == "ta":
+                return "உங்கள் அடிப்படை தகுதி விவரங்கள் கிடைத்தவுடன் நான் சரியான திட்டங்களைப் பொருத்தி சொல்ல முடியும்."
+            return "I can match you accurately once I have your basic eligibility details."
+
+        if scheme_count == 0:
+            if language == "ta":
+                return (
+                    "தற்போது உள்ள திட்டத் தரவின் அடிப்படையில், உங்கள் சுயவிவரத்திற்கு துல்லியமாக பொருந்தும் திட்டம் கண்டுபிடிக்கப்படவில்லை. "
+                    "மாணவர் உதவித்தொகை, கல்வி உதவி அல்லது திறன் மேம்பாட்டு திட்டங்களை கேளுங்கள்; தேடலை மேலும் துல்லியப்படுத்துகிறேன்."
+                )
+            return (
+                "I could not find a confident exact match from the currently indexed schemes for your profile. "
+                "Try asking for student scholarships, education assistance, or skill-development schemes in Tamil Nadu, "
+                "and I can refine the search further."
+            )
+
         llm_response = self._chat(
             "You are a Tamil Nadu welfare schemes expert assistant.",
             (
@@ -121,6 +175,7 @@ class LLMOrchestrator:
                 f"User profile: {json.dumps(profile)}\n"
                 f"Scheme context: {scheme_context}\n"
                 f"Follow-up question to end with (if present): {follow_up_question or 'None'}\n"
+                f"Respond in {target_language}.\n"
                 "Rules: Explain concrete scheme details (benefits, eligibility, documents, application process)."
             ),
             max_tokens=420,
@@ -129,10 +184,16 @@ class LLMOrchestrator:
         if llm_response:
             return llm_response
 
-        base = (
-            "I found relevant Tamil Nadu schemes based on your message and shared profile. "
-            "I have included eligibility, benefits, required documents, and application links below."
-        )
+        if language == "ta":
+            base = (
+                "உங்கள் தகவல் மற்றும் கேள்வியின் அடிப்படையில் தொடர்புடைய தமிழ்நாடு திட்டங்களை கண்டுபிடித்தேன். "
+                "கீழே தகுதி, நன்மைகள், தேவையான ஆவணங்கள் மற்றும் விண்ணப்ப விவரங்களை கொடுத்துள்ளேன்."
+            )
+        else:
+            base = (
+                "I found relevant Tamil Nadu schemes based on your message and shared profile. "
+                "I have included eligibility, benefits, required documents, and application links below."
+            )
         if follow_up_question:
             return f"{base} {follow_up_question}"
         return base
@@ -141,19 +202,39 @@ class LLMOrchestrator:
         text = message.lower()
         updates: dict[str, Any] = {}
 
-        age_match = re.search(r"\b(?:age\s*(?:is|:)?\s*)?(\d{1,2})\b", text)
+        age_match = re.search(
+            r"\bage\s*(?:is|:)?\s*(\d{1,2})\b|\b(?:i am|i'm)\s*(\d{1,2})\b|\b(\d{1,2})\s*(?:year old|years old|yr old|yrs old|yo)\b",
+            text,
+        )
         if age_match:
-            age = int(age_match.group(1))
+            age_text = age_match.group(1) or age_match.group(2) or age_match.group(3)
+            age = int(age_text)
             if 0 < age < 120:
                 updates["age"] = age
 
-        income_match = re.search(r"(?:income|salary|earn|annual).*?(\d[\d,]*)", text)
+        income_match = re.search(
+            r"(?:income|salary|earn(?:ing)?s?|annual|family income|father'?s income|mother'?s income).*?(\d[\d,]*(?:\.\d+)?)\s*(k|thousand|lakh|lakhs|crore|crores)?",
+            text,
+        )
         if income_match:
-            updates["income"] = int(income_match.group(1).replace(",", ""))
+            amount = float(income_match.group(1).replace(",", ""))
+            unit = (income_match.group(2) or "").strip()
+            multiplier = 1
+            if unit in {"k", "thousand"}:
+                multiplier = 1_000
+            elif unit in {"lakh", "lakhs"}:
+                multiplier = 100_000
+            elif unit in {"crore", "crores"}:
+                multiplier = 10_000_000
+
+            updates["income"] = int(amount * multiplier)
 
         residence_match = re.search(r"(?:lived|living|residing|residence).*?(\d{1,2})\s*(?:years|yrs)", text)
         if residence_match:
             updates["residence_years"] = int(residence_match.group(1))
+        elif re.search(r"\b(?:native|origin|from tamil nadu|born in tamil nadu)\b", text):
+            # Treat explicit Tamil Nadu nativity as long-term residence for ranking hints.
+            updates["residence_years"] = 99
 
         for gender in ["male", "female", "transgender", "other"]:
             if re.search(rf"\b{gender}\b", text):
@@ -166,8 +247,12 @@ class LLMOrchestrator:
                 updates["caste"] = normalized
                 break
 
-        occupation_match = re.search(r"(?:i am|i'm|working as|occupation is)\s+([a-z ]{3,40})", text)
+        occupation_match = re.search(r"(?:i am|i'm|working as|occupation is)\s+([^\n\.,;]{2,60})", text)
         if occupation_match:
-            updates["occupation"] = occupation_match.group(1).strip()
+            raw = occupation_match.group(1).strip()
+            raw = re.split(r"\band\b|\bmy\b|\bage\b|\bincome\b", raw)[0].strip()
+            raw = re.sub(r"^(a|an)\s+", "", raw).strip()
+            if raw:
+                updates["occupation"] = raw
 
         return updates

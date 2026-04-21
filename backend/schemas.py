@@ -9,6 +9,7 @@ class SessionCreateResponse(BaseModel):
 class ChatMessageRequest(BaseModel):
     session_id: str = Field(min_length=1)
     message: str = Field(min_length=1, max_length=4000)
+    language: str = Field(default="en", pattern="^(en|ta)$")
 
 
 class SchemeCard(BaseModel):

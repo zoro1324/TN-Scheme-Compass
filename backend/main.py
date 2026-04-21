@@ -77,7 +77,12 @@ def create_session(db: Session = Depends(get_db)) -> SessionCreateResponse:
 @app.post("/api/chat/message", response_model=ChatMessageResponse)
 def chat_message(payload: ChatMessageRequest, db: Session = Depends(get_db)) -> ChatMessageResponse:
     try:
-        result = chat_service.handle_message(db=db, session_id=payload.session_id, message=payload.message)
+        result = chat_service.handle_message(
+            db=db,
+            session_id=payload.session_id,
+            message=payload.message,
+            language=payload.language,
+        )
         return ChatMessageResponse(
             session_id=payload.session_id,
             reply=result["reply"],

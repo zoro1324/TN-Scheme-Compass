@@ -1,17 +1,18 @@
-export default function ChatBubble({ role, text }) {
+export default function ChatBubble({ role, text, children, variant = "default" }) {
   const isUser = role === "user";
+  const isWarning = variant === "warning" && !isUser;
+  const bubbleClassName = [
+    "bubble",
+    isUser ? "bubble--user" : "bubble--assistant",
+    isWarning ? "bubble--warning" : "",
+  ].filter(Boolean).join(" ");
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div
-        className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm md:max-w-[75%] ${
-          isUser
-            ? "bg-brand-600 text-white"
-            : "glow-panel border border-white/70 text-slate-800"
-        }`}
-      >
-        {text}
-      </div>
+    <div className={`bubble-row ${isUser ? "bubble-row--user" : "bubble-row--assistant"}`}>
+      <article className={bubbleClassName}>
+        <p className="bubble-text">{text}</p>
+        {children}
+      </article>
     </div>
   );
 }
